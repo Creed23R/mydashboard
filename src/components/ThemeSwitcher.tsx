@@ -1,11 +1,10 @@
-// app/components/ThemeSwitcher.tsx
 "use client";
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
-import { MoonIcon } from "@/../public/MoonIcon"
-import { SunIcon } from "@/../public/SunIcon"
+import { MoonIcon, SunIcon} from "@/components/Icons"
+
 
 export function ThemeSwitcher() {
 

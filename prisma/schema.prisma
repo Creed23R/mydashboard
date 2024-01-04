@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admins {
+  adminId   Int      @id @default(autoincrement())
+  name      String   @db.VarChar(200)
+  lastname  String   @db.VarChar(200)
+  email     String   @unique @db.VarChar(200)
+  password  String   @db.VarChar(200)
+  role      String   @db.VarChar(5)
+  image     String   @db.VarChar(200)
+  imgId     String   @db.VarChar(500)
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Products {
+  productId          Int     @id @default(autoincrement())
+  title              String  @db.VarChar(255)
+  description        String  @db.Text
+  price              Decimal @db.Decimal(10, 2)
+  discountPercentage Decimal @db.Decimal(5, 2)
+  rating             Decimal @db.Decimal(3, 2)
+  stock              Int
+  brand              String  @db.VarChar(255)
+  categoryId         Int     @db.Int
+  imageUrl           String  @db.VarChar(255)
+  imagePublicId      String  @db.VarChar(100)
+  images             Image[] @relation("ProductImages")
+
+  category  Categories @relation(fields: [categoryId], references: [categoryId])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Categories {
+  categoryId  Int      @id @default(autoincrement())
+  name        String   @db.VarChar(200)
+  description String?  @db.VarChar(500)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Products[]
+}
+
+model Image {
+  imageId       Int    @id @default(autoincrement())
+  productId     Int    @db.Int
+  imageUrl      String @db.VarChar(500)
+  imagePublicId String @db.VarChar(100)
+
+  product Products @relation("ProductImages", fields: [productId], references: [productId])
+}
